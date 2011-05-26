@@ -1,5 +1,6 @@
 package svoysh.util
 
+import java.util.concurrent.atomic.AtomicBoolean
 import net.liftweb.util._
 
 object RunMode extends RunMode
@@ -47,12 +48,14 @@ private object ModeHolder {
 
 	lazy val isStartedInDevMode: Boolean = !isStartedInProdMode
 
-	private var _isProdModeCurrently: Boolean = isStartedInProdMode
+	private var _isProdModeCurrently: AtomicBoolean = {
+		new AtomicBoolean(isStartedInProdMode)
+	}
 
-	def isProdModeCurrently: Boolean = _isProdModeCurrently
+	def isProdModeCurrently: Boolean = _isProdModeCurrently.get
 
 	def setProdModeCurrently(is: Boolean) {
-		_isProdModeCurrently = is
+		_isProdModeCurrently.set(is)
 
 		// TODO: DB can be reconnected here and other startup data updated
 		// depending on changed mode.
