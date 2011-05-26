@@ -48,7 +48,7 @@ private object ModeHolder {
 
 	lazy val isStartedInDevMode: Boolean = !isStartedInProdMode
 
-	private var _isProdModeCurrently: AtomicBoolean = {
+	private val _isProdModeCurrently: AtomicBoolean = {
 		new AtomicBoolean(isStartedInProdMode)
 	}
 
